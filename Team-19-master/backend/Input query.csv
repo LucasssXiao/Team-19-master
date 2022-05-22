@@ -1,0 +1,115 @@
+{\rtf1\ansi\ansicpg1252\cocoartf1561\cocoasubrtf610
+{\fonttbl\f0\fswiss\fcharset0 Helvetica;\f1\froman\fcharset0 Times-Roman;}
+{\colortbl;\red255\green255\blue255;\red0\green0\blue0;}
+{\*\expandedcolortbl;;\cssrgb\c0\c0\c0;}
+\margl1440\margr1440\vieww10800\viewh8400\viewkind0
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+
+\f0\fs24 \cf0 \
+/*****Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum ******/\
+\pard\pardeftab720\sl320\partightenfactor0
+
+\f1\fs26 \cf2 \expnd0\expndtw0\kerning0
+SELECT '%c%' as Chapter,\
+    \
+    Case\
+           When ticket.status IN ('new','assigned') and ticket_custom.ticket = 3 then \'93Win\'94\
+           When ticket.status IN ('new','assigned') and ticket_custom.ticket = 2 then \'93Lose\'94\
+           When ticket.status IN ('new','assigned') and ticket_custom.ticket = 1 then \'93Draw\'94\
+           When ticket.status IN ('new','assigned') and EmployeeConsolidated.id= 49887 then \'93Undefined\'94  \
+    End as Feature,\
+    \
+   ticket_custom.ticket,\
+   ticket_custom.mn,\
+   ticket_custom.value,\
+   ticket_custom.category, \
+    SUM(CASE WHEN ticket.status IN ('new','assigned') THEN 1 ELSE 0 END) as New,\
+    SUM(CASE WHEN ticket.status IN ('new','assigned') THEN 1 ELSE 0 END) as Old,\
+    SUM(CASE WHEN ticket.status='closed' THEN 1 ELSE 0 END) as 'Closed',\
+\
+    count(id) AS Total,\
+    EmployeeConsolidated.id,\
+    EmployeeConsolidated.rate,\
+    ticket.id AS _id\
+\
+FROM engine.ticket\
+\
+INNER JOIN engine.ticket_custom \
+    ON ticket.id = ticket_custom.ticket\
+\
+\'97Subquery\
+\
+Left join \
+\
+( \
+\
+\pard\pardeftab720\sl360\partightenfactor0
+
+\fs32 \cf2 SELECT\
+  e.employee_id AS "Employee #"\
+  , e.first_name || ' ' || e.last_name AS "Name"\
+  , e.email AS "Email"\
+  , e.phone_number AS "Phone"\
+  , TO_CHAR(e.hire_date, 'MM/DD/YYYY') AS "Hire Date"\
+  , TO_CHAR(e.salary, 'L99G999D99', 'NLS_NUMERIC_CHARACTERS = ''.,'' NLS_CURRENCY = ''$''') AS "Salary"\
+  , e.commission_pct AS "Comission %"\
+  , 'works as ' || j.job_title || ' in ' || d.department_name || ' department (manager: '\
+    || dm.first_name || ' ' || dm.last_name || ') and immediate supervisor: ' || m.first_name || ' ' || m.last_name AS "Current Job"\
+  , TO_CHAR(j.min_salary, 'L99G999D99', 'NLS_NUMERIC_CHARACTERS = ''.,'' NLS_CURRENCY = ''$''') || ' - ' ||\
+      TO_CHAR(j.max_salary, 'L99G999D99', 'NLS_NUMERIC_CHARACTERS = ''.,'' NLS_CURRENCY = ''$''') AS "Current Salary"\
+  , l.street_address || ', ' || l.postal_code || ', ' || l.city || ', ' || l.state_province || ', '\
+    || c.country_name || ' (' || r.region_name || ')' AS "Location"\
+  , jh.job_id AS "History Job ID"\
+  , 'worked from ' || TO_CHAR(jh.start_date, 'MM/DD/YYYY') || ' to ' || TO_CHAR(jh.end_date, 'MM/DD/YYYY') ||\
+    ' as ' || jj.job_title || ' in ' || dd.department_name || ' department' AS "History Job Title"\
+  \
+FROM employees e\
+-- to get title of current job_id\
+  JOIN jobs j \
+    ON e.job_id = j.job_id\
+-- to get name of current manager_id\
+  LEFT JOIN employees m \
+    ON e.manager_id = m.employee_id\
+-- to get name of current department_id\
+  LEFT JOIN departments d \
+    ON d.department_id = e.department_id\
+-- to get name of manager of current department\
+-- (not equal to current manager and can be equal to the employee itself)\
+  LEFT JOIN employees dm \
+    ON d.manager_id = dm.employee_id\
+-- to get name of location\
+  LEFT JOIN locations l\
+    ON d.location_id = l.location_id\
+  LEFT JOIN countries c\
+    ON l.country_id = c.country_id\
+  LEFT JOIN regions r\
+    ON c.region_id = r.region_id\
+-- to get job history of employee\
+  LEFT JOIN job_history jh\
+    ON e.employee_id = jh.employee_id\
+-- to get title of job history job_id\
+  LEFT JOIN jobs jj\
+    ON jj.job_id = jh.job_id\
+-- to get namee of department from job history\
+  LEFT JOIN departments dd\
+    ON dd.department_id = jh.department_id\
+\
+ORDER BY e.employee_id;\
+\pard\pardeftab720\sl320\partightenfactor0
+
+\fs26 \cf2 \
+\
+) As EmployeeConsolidated\
+On 
+\fs32   e.employee_id  = 
+\fs26 engine.ide\
+    \
+\
+\
+WHERE ticket_custom.name='chapter' \
+    AND ticket_custom.value LIKE '%c%' \
+    AND type='New material' \
+    AND milestone='1.1.12' \
+    AND component NOT LIKE 'internal_engine'\
+GROUP BY ticket.id\
+}
