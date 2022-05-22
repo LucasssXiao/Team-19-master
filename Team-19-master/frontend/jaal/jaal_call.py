@@ -40,7 +40,12 @@ edge_df, node_df = load_get()
 # node_df['title'] = title
 
 # init Jaal and run server (with opts)
-Jaal(edge_df, node_df).plot(vis_opts={'height': '400px', # change height
+Jaal(edge_df, node_df).plot(vis_opts={'height': '1300px', # change height
+                                      'bottom': '50vh',
+                                      'position': 'absolute',
+                                      'left': '0',
+                                      'right': '0',
+                                      'width': '100%',
                                       'interaction':{'hover': True}, # turn on-off the hover 
                                       'manipulation': {
                                         'enabled': True

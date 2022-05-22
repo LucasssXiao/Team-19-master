@@ -223,10 +223,10 @@ def get_app_layout(graph_data, color_legends=[], directed=False, vis_opts=None):
                 dbc.Col([
                     # setting panel
                     dbc.Form([
-                        # # ---- search section ----
-                        # html.H6("Search"),
-                        # html.Hr(className="my-2"),
-                        # search_form,
+                        # ---- search section ----
+                        html.H6("Search"),
+                        html.Hr(className="my-2"),
+                        search_form,
 
                         # ---- filter section ----
                         create_row([
@@ -294,6 +294,27 @@ def get_app_layout(graph_data, color_legends=[], directed=False, vis_opts=None):
                                 description='Select the numerical edge property to size edges by'
                             ),
                         ], id="size-show-toggle", is_open=True),
+
+                        # # ---- additional searching section ----
+                        # create_row([
+                        #     html.H6("Searching"), # heading
+                        #     dbc.Button("Hide/Show", id="size-show-toggle-button", outline=True, color="secondary", size="sm"), # legend
+                        #     # dbc.Button("Legends", id="color-legend-toggle", outline=True, color="secondary", size="sm"), # legend
+                        #     # add the legends popup
+                        #     # dbc.Popover(
+                        #     #     children=color_legends,
+                        #     #     id="color-legend-popup", is_open=False, target="color-legend-toggle",
+                        #     # ),
+                        # ], {**fetch_flex_row_style(), 'margin-left': 0, 'margin-right':0, 'justify-content': 'space-between'}),
+                        # dbc.Collapse([
+                        #     html.Hr(className="my-2"),
+                        #     get_select_form_layout(
+                        #         id='search_graph',
+                        #         options=[{'label': opt, 'value': opt} for opt in num_node_features],
+                        #         label='Search specific nodes',
+                        #         description='Search specific nodes'
+                        #     ),
+                        # ], id="size-show-toggle", is_open=True),
 
                     ], className="card", style={'padding': '5px', 'background': '#e5e5e5'}),
                 ],width=3, style={'display': 'flex', 'justify-content': 'center', 'align-items': 'center'}),
